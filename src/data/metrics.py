@@ -1,3 +1,3 @@
-fundamental_metrics = ['P/E', 'P/S', 'Dividend %', 'Payout', 'Index']
+fundamental_metrics = ['Index', 'P/E', 'P/S', 'Dividend %', 'Payout', 'Beta']
 
-all_metrics = ['P/E', 'P/S', 'Dividend %', 'Payout', 'Index', 'Name', 'Sector', 'Country']
+all_metrics = [*['Name', 'Sector', 'Country'], *fundamental_metrics]

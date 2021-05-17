@@ -11,8 +11,9 @@ apiUrl = 'https://finviz.com/quote.ashx'
 def get_fundamental_metric(soup, metric=None):
     if metric is None:
         metric = fundamental_metrics
-    name_cell = soup.find(text=metric)
-    value_cell = name_cell.find_next(class_='snapshot-td2')
+    # Search in table with fundamental metrics
+    name_cell = soup.find(text=metric) # First search header cell
+    value_cell = name_cell.find_next(class_='snapshot-td2') # Next search closest cell
     return value_cell.text
 
 
