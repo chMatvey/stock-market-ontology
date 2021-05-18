@@ -5,7 +5,8 @@ from bs4 import BeautifulSoup as bs
 
 from src.data.metrics import fundamental_metrics
 
-apiUrl = 'https://finviz.com/quote.ashx'
+
+resourceUrl = 'https://finviz.com/quote.ashx'
 
 
 def get_fundamental_metric(soup, metric=None):
@@ -34,7 +35,7 @@ def get_fundamental_data(df):
         try:
             headers = {
                 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.93 Safari/537.36'}
-            response = requests.get(apiUrl + '?t=' + symbol, headers=headers)
+            response = requests.get(resourceUrl + '?t=' + symbol, headers=headers)
             soup = bs(markup=response.content, features="html.parser")
 
             for metric in fundamental_metrics:

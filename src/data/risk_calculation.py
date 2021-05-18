@@ -6,8 +6,8 @@ import numpy
 import tinvest
 from tinvest import CandleResolution
 
-token = os.environ['TINKOFF_INVEST_TOKEN']
 
+token = os.environ['TINKOFF_INVEST_TOKEN']
 client = tinvest.SyncClient(token)
 
 
@@ -47,6 +47,3 @@ def make_request(request, *args):
         print('Too many request, wait 5 minute')
         time.sleep(60 * 5 + 5)  # 5 min 5 sec
         return request(tuple(args))
-
-
-print(calculate_risk_and_expect_growth_in_month('AAPL'))
