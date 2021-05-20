@@ -1,18 +1,22 @@
+import math
 import string
 
 from rdflib import Graph, Literal
-from rdflib.namespace import RDF
+from rdflib.namespace import RDF, XSD
 
 from src.ontology.data_reader import get_companies_sectors_countries, get_stocks
 from src.ontology.entities import *
 
 
 def default_data_parser(value):
-    return value
+    if value == '-':
+        return 0
+    return float(value)
 
 
 def percent_data_parser(value):
-    return value.replace('%', '')
+    value_in_string = value.replace('%', '')
+    return default_data_parser(value_in_string)
 
 
 def default_name_parser(name):
@@ -20,8 +24,8 @@ def default_name_parser(name):
 
 
 def to_fixed(number, digits=2):
-    return f"{number:.{digits}f}"
-
+    value = f"{number:.{digits}f}"
+    return default_data_parser(value)
 
 dataPropertyMap = {
     'P/E': {
@@ -99,7 +103,11 @@ def add_stocks(graph: Graph, all_indexes_nodes, all_companies_nodes, all_sectors
             value = stock[key]
             if value == '-':
                 continue
+            if value == 'nan' or value == 'none':
+                continue
             parsed_value = dataPropertyInfo['data_parser'](value)
+            if math.isnan(parsed_value):
+                continue
             add_data_property(graph, stock_node, parsed_value, dataPropertyInfo['relation'])
 
     return result
@@ -127,8 +135,8 @@ def add_object_property(graph, domain, client, relation):
     graph.add(triple)
 
 
-def add_data_property(graph, domain, value, relation):
-    triple = (domain, relation, Literal(value, datatype='xsd:float'))
+def add_data_property(graph, domain, value, relation, datatype=XSD.float):
+    triple = (domain, relation, Literal(value, datatype=datatype))
     graph.add(triple)
 
 
